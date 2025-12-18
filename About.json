@@ -1,0 +1,273 @@
+{
+  "project": {
+    "name": "RaptorRelay-Automation",
+    "license": "MIT",
+    "scope": "Enterprise DevOps, Security, Cloud, and AI Engineering",
+    "description": "RaptorRelay Automation is an open-source, AI-powered SOAR + MDR automation fabric designed to relay events, enrichments, triage decisions, and automated responses through a high-speed, modular orchestration pipeline using fully open-source tooling."
+  },
+
+  "github_best_practices": {
+    "repository_and_version_control": {
+      "structure": [
+        "Domain-based directories (docs/, docker/, packs/, ai_agents/, ci_cd/)",
+        "Reusable modules separated from environment-specific code",
+        "Scripts kept idempotent and declarative"
+      ],
+      "versioning": [
+        "Pull requests with mandatory reviews",
+        "Protected branches with restricted direct pushes",
+        "Semantic versioning for releases and tags"
+      ]
+    },
+    "security_and_compliance": {
+      "access_control": [
+        "Least-privilege via GitHub Teams and CODEOWNERS",
+        "Mandatory MFA for contributors"
+      ],
+      "secure_development": [
+        "OWASP Top 10 alignment",
+        "No secrets committed; use secret managers",
+        "Automated dependency and image vulnerability scanning"
+      ],
+      "incident_readiness": [
+        "Incident response playbooks in docs/",
+        "Security incidents tracked with restricted issues"
+      ]
+    },
+    "ci_cd_and_quality": {
+      "pipelines": [
+        "GitHub Actions with build, test, and deploy stages",
+        "Environment-specific approvals for production",
+        "Automated releases and rollbacks"
+      ],
+      "testing": [
+        "Unit, integration, and end-to-end tests",
+        "Coverage thresholds enforced",
+        "Tests required on every pull request"
+      ],
+      "standards": [
+        "Linting and formatting enforced via CI",
+        "Coding standards documented in CONTRIBUTING.md"
+      ]
+    },
+    "architecture_and_scalability": {
+      "design": [
+        "Loosely coupled components with clear interfaces",
+        "Contracts and schemas at service boundaries",
+        "Horizontal scalability with measured optimization"
+      ],
+      "observability": [
+        "Metrics, logs, and traces instrumented",
+        "Documented SLAs and SLOs",
+        "Load and stress testing strategies"
+      ]
+    },
+    "ai_ml_practices": {
+      "model_management": [
+        "Explicit model and dataset versioning",
+        "Experiment tracking via metadata or MLflow-style configs",
+        "Large artifacts stored outside Git where appropriate"
+      ],
+      "reproducibility": [
+        "Pinned dependencies and deterministic seeds",
+        "Documented training and inference pipelines"
+      ]
+    },
+    "governance_and_docs": {
+      "governance": [
+        "Contribution guidelines and code ownership",
+        "RFCs for major architectural changes"
+      ],
+      "documentation": [
+        "Concise but complete README",
+        "Onboarding documentation",
+        "Docs versioned alongside code"
+      ]
+    }
+  },
+
+  "architecture": {
+    "layers": [
+      {
+        "layer": "Event Intake & Detection",
+        "components": [
+          "Wazuh agents",
+          "OSQuery",
+          "Sysmon",
+          "OpenSearch SIEM",
+          "StackStorm sensors subscribed to detection rules"
+        ]
+      },
+      {
+        "layer": "SOAR Orchestration",
+        "components": [
+          "StackStorm packs",
+          "Sensors, rules, actions, workflows",
+          "Python and JavaScript automation",
+          "Orquesta multi-step workflows"
+        ]
+      },
+      {
+        "layer": "AI Context & Agentic",
+        "components": [
+          "Local LLMs via Ollama (LLaMA, Mistral, Qwen)",
+          "Enrichment, MITRE mapping, decision, and response agents"
+        ]
+      },
+      {
+        "layer": "Case Management",
+        "components": [
+          "OpenProject",
+          "Groovy automation microservices",
+          "REST-based workflow transitions",
+          "Parent/child incident relationships"
+        ]
+      },
+      {
+        "layer": "CI/CD & Infrastructure",
+        "components": [
+          "GitHub Actions",
+          "Docker Compose environments",
+          "Automated testing and pack validation",
+          "Artifact packaging and deployment"
+        ]
+      }
+    ]
+  },
+
+  "system_components": [
+    {
+      "name": "Event Intake & Detection",
+      "tools": ["Wazuh", "OSQuery", "OpenSearch"],
+      "functions": [
+        "Collect endpoint telemetry",
+        "Index and correlate logs",
+        "Trigger SOAR workflows"
+      ]
+    },
+    {
+      "name": "SOAR Packs",
+      "packs": [
+        "rr_enrichment_pack",
+        "rr_mitre_mapper_pack",
+        "rr_ticketing_pack",
+        "rr_response_pack",
+        "rr_ai_agents_pack",
+        "rr_utils_pack"
+      ]
+    },
+    {
+      "name": "AI Agents",
+      "responsibilities": [
+        "Alert summarization",
+        "MITRE ATT&CK inference",
+        "Triage and escalation decisions",
+        "Automated response recommendations"
+      ]
+    },
+    {
+      "name": "Ticketing & Workflow",
+      "tool": "OpenProject",
+      "automation": [
+        "Groovy microservices",
+        "REST API integrations",
+        "Automated incident updates"
+      ]
+    },
+    {
+      "name": "CI/CD Pipeline",
+      "steps": [
+        "Linting and validation",
+        "Unit and integration tests",
+        "Docker-based test environments",
+        "Automated deployment to dev and staging"
+      ]
+    }
+  ],
+
+  "playbooks": [
+    {
+      "name": "Malware Enrichment & Containment",
+      "flow": [
+        "Detect malware",
+        "Enrich context",
+        "Map MITRE techniques",
+        "Create incident",
+        "Optional host isolation"
+      ]
+    },
+    {
+      "name": "Privilege Escalation Investigation",
+      "flow": [
+        "Detect escalation",
+        "Validate with OSQuery",
+        "MITRE mapping",
+        "Escalate or auto-ticket"
+      ]
+    },
+    {
+      "name": "Lateral Movement Correlation",
+      "flow": [
+        "Detect movement",
+        "Aggregate multi-host logs",
+        "Summarize and correlate",
+        "Escalate with full context"
+      ]
+    },
+    {
+      "name": "Suspicious Process Chain Triage",
+      "flow": [
+        "Detect anomaly",
+        "LLM risk scoring",
+        "Create case",
+        "Recommend next actions"
+      ]
+    },
+    {
+      "name": "Cloud Access Anomaly",
+      "flow": [
+        "Detect geo or behavior anomaly",
+        "Enrich context",
+        "Decision agent approval",
+        "Execute remediation"
+      ]
+    }
+  ],
+
+  "repository_structure": {
+    "docs": [
+      "architecture",
+      "component_overview",
+      "event_flow",
+      "ai_context_engineering",
+      "soar_playbooks",
+      "mitre_mapping"
+    ],
+    "docker": ["docker-compose.yaml", "stackstorm/"],
+    "raptorrelay_packs": [
+      "rr_enrichment_pack",
+      "rr_mitre_mapper_pack",
+      "rr_ticketing_pack",
+      "rr_response_pack",
+      "rr_ai_agents_pack",
+      "rr_utils_pack"
+    ],
+    "ai_agents": [
+      "enrichment_agent.py",
+      "decision_agent.py",
+      "mitre_agent.py",
+      "response_agent.py"
+    ],
+    "ticketing": ["groovy/", "java/"],
+    "api_integrations": [
+      "openproject_client.py",
+      "wazuh_client.py",
+      "opensearch_queries.py",
+      "osquery_client.py"
+    ],
+    "ci_cd": ["github-actions/", "testing/"],
+    "webui": ["index.html", "actions.js"],
+    "scripts": ["generate-mitre-map.py", "batch-process-logs.py"],
+    "root": ["README.md", "LICENSE"]
+  }
+}
